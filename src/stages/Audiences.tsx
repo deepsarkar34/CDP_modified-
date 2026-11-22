@@ -14,7 +14,7 @@ export function Audiences({ local, deep, consent }: StageProps) {
     <>
       <Head
         title={tab === 0 ? 'Side effect *priority*' : 'In the audience *two minutes* later'}
-        sub="A segment is a saved rule set run against every unified profile. Two ways Regeneron uses them."
+        sub="A segment is a saved rule set run against every unified profile. Two ways a brand team uses them."
       />
       <div className="seg light" role="group" aria-label="Use case" style={{ justifySelf: 'start' }}>
         {TABS.map((t, i) => <button key={t} aria-pressed={tab === i} onClick={() => setTab(i)}>{t}</button>)}

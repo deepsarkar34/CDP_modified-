@@ -15,7 +15,7 @@ export const STEPS: StepDef[] = [
   {
     id: 'hook', title: 'Question', sub: 'One or six?', zone: 'sources',
     notes: [
-      'Ask the room whether this is one oncologist or six. Each fragment comes from a different Regeneron system: Veeva, IQVIA, claims, SFMC, the HCP website and OneKey.',
+      'Ask the room whether this is one oncologist or six. Each fragment comes from a different system: Veeva, IQVIA, claims, SFMC, the HCP website and OneKey.',
       'It is one person: Dr. Lena Ortiz, a medical oncologist in Houston. We will follow her through Snowflake, Data 360, a decided next action, the channels and the learning loop.',
     ],
   },
@@ -33,7 +33,7 @@ export const STEPS: StepDef[] = [
       'This is bronze, exactly as received. Nothing can be matched on it yet.',
       'Silver standardizes each field: name parts, one specialty list, postal address, one date format, lowercase email.',
       'Duplicates inside a source go: two Veeva records become one, two SFMC contacts become one.',
-      'Patient tokens are swapped into Regeneron\'s own token space and quality checks run. Snowpark and dynamic tables run these rules on every refresh, and Cortex Code can help engineers write them. This is classic data engineering, and it belongs here, before anything reaches Data 360.',
+      'Patient tokens are swapped into the company\'s own token space and quality checks run. Snowpark and dynamic tables run these rules on every refresh, and Cortex Code can help engineers write them. This is classic data engineering, and it belongs here, before anything reaches Data 360.',
     ],
   },
   {
@@ -71,15 +71,15 @@ export const STEPS: StepDef[] = [
   {
     id: 'decide', title: 'Decide', sub: 'Next best action', zone: 'decision',
     notes: [
-      'Two passes, in this order. Rules remove what Regeneron is not allowed to do: here the efficacy email she already has, and MSL outreach without a medical information request. Then machine learning ranks what is left by how likely she is to engage. Press M to compare Rules only.',
-      'With the model: the side effect guide email today, then the rep alert, the visit and the webinar, and a pause if she does not engage. An Agentforce agent writes the rep\'s reason; the language model explains, it never decides. Rules only sends the webinar invite: allowed, but not what she just asked for. Regeneron has no decision engine today: rules run in Flow, the model runs in Snowflake.',
+      'Two passes, in this order. Rules remove what the brand is not allowed to do: here the efficacy email she already has, and MSL outreach without a medical information request. Then machine learning ranks what is left by how likely she is to engage. Press M to compare Rules only.',
+      'With the model: the side effect guide email today, then the rep alert, the visit and the webinar, and a pause if she does not engage. An Agentforce agent writes the rep\'s reason; the language model explains, it never decides. Rules only sends the webinar invite: allowed, but not what she just asked for. There is no decision engine today: rules run in Flow, the model runs in Snowflake.',
     ],
   },
   {
     id: 'activate', title: 'Activate', sub: 'Push and pull', zone: 'channels',
     notes: [
       'Push channels receive a list from Data 360. Pull channels ask about one person when she shows up. Click a band to show the route and the steps.',
-      'What she actually sees: the email from Regeneron Oncology, her rep Marcus Lee\'s alert, a publisher placement and a personalized website.',
+      'What she actually sees: the email from the oncology brand team, her rep Marcus Lee\'s alert, a publisher placement and a personalized website.',
       'The real-time path: download at 10:14, the event streams in within seconds, the rule checks score and consent, the decision runs and the email goes at 10:42. The rep alert appears the same day.',
       'One story across channels: side effect support first, the nurse webinar next. Nothing sends efficacy content she already has.',
     ],
@@ -87,7 +87,7 @@ export const STEPS: StepDef[] = [
   {
     id: 'learn', title: 'Learn', sub: 'Feedback and proof', zone: 'channels',
     notes: [
-      'Click each outcome. What she does next changes what Regeneron does for her next week. The model learns at its next retrain; the rules learn the same day.',
+      'Click each outcome. What she does next changes what the brand does for her next week. The model learns at its next retrain; the rules learn the same day.',
       'Results flow back from every channel and are shared back to Snowflake through Zero Copy, where the models retrain.',
       'To prove it works, hold back 10 percent of Side effect priority, 34 oncologists, from every action. After 90 days, 31 percent of contacted oncologists engaged versus 12 percent of the holdout: 19 points caused by the program. Snowflake thinks across all oncologists; Data 360 acts on one, at the right moment, with consent checked.',
     ],

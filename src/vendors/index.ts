@@ -1,4 +1,4 @@
-// This version tells one stack: Regeneron's Snowflake plus Salesforce Data 360.
+// This version tells one stack: Snowflake plus Salesforce Data 360.
 // The platform switch from the Dr. Brown demo is removed; every product term lives here.
 
 export type VendorId = 'salesforce';

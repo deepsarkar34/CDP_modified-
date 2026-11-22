@@ -1,10 +1,10 @@
-# CDP Journey: Dr. Ortiz (Regeneron, Snowflake + Salesforce Data 360)
+# CDP Journey: Dr. Ortiz (Snowflake + Salesforce Data 360)
 
 A live, presenter-driven demo that follows one medical oncologist, Dr. Lena Ortiz, from six source systems through Snowflake engineering and AI, Salesforce Data 360, a decided next action, live channels and a learning loop.
 
 **Question → Capture → Clean → Master → AI and ML → Resolve → Audiences → Decide → Activate → Learn**
 
-All people, IDs, scores and counts are illustrative, not Regeneron data. Content names are placeholders for MLR-approved assets. Built from the "Dr. Ortiz's Data Journey" HTML brief; it started as a copy of the Dr. Brown demo in `deepsarkar34/CDP`, which is unchanged.
+All people, IDs, scores, counts and company names are illustrative. Content names are placeholders for MLR-approved assets. Built from the "Dr. Ortiz's Data Journey" HTML brief; it started as a copy of the Dr. Brown demo in `deepsarkar34/CDP`, which is unchanged.
 
 ## Run it
 
@@ -34,7 +34,7 @@ npm run preview      # serve the build, http://localhost:4173
 
 1. **Question**: six fragments, one per system, merge into Lena Ortiz, MD.
 2. **Capture**: 8 records across 6 systems; batch through Openflow to Snowflake, web streamed to Data 360.
-3. **Clean**: bronze to silver in Snowflake; patient tokens re-tokenized to Regeneron's space.
+3. **Clean**: bronze to silver in Snowflake; patient tokens re-tokenized to the company's own token space.
 4. **Master**: one golden record, golden ID HCP-00731, matched in Snowflake against OneKey.
 5. **AI and ML**: Snowflake ML likelihood score 0.81; Cortex turns a call note into a topic; Snowflake Intelligence answers a plain-English question.
 6. **Resolve**: Zero Copy into Data 360; on Day 3 a tracked email click links her anonymous web device.

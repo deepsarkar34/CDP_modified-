@@ -3,14 +3,14 @@
 _Last updated: 2026-11-22_
 
 ## Purpose
-A 15–18 minute live demo for Regeneron. Mixed room (brand and technical). Shows how Regeneron's Snowflake and Salesforce Data 360 work together for one oncologist, end to end. Source brief: "Dr. Ortiz's Data Journey" HTML.
+A 15–18 minute live demo for a pharma client. Mixed room (brand and technical). Shows how a client's Snowflake and Salesforce Data 360 work together for one oncologist, end to end. Source brief: "Dr. Ortiz's Data Journey" HTML.
 
 ## Decisions
 | Topic | Decision |
 |---|---|
 | Starting point | Copy of the Dr. Brown demo (stack, Indegene look, presenter flow, tests) |
 | HCP | Dr. Lena Ortiz, medical oncologist, Houston; golden ID HCP-00731 |
-| Client | Regeneron named on screen (configurable in `scenario.json`); do not reuse with other prospects |
+| Client | No real company named. On-screen copy is generic; only the header uses the fictional client name, Acme Pharma (configurable in `scenario.json`) |
 | Platform switch | Removed: the story is Snowflake + Salesforce Data 360 throughout |
 | Opening screen | Six fragments, one per system (Veeva, IQVIA, Claims and EHR, SFMC, HCP website, OneKey) |
 | Record count | Eight records across six systems (the brief said seven; the cards add to eight) |

@@ -1,7 +1,7 @@
 {
-  "brand": "Regeneron",
-  "tokenPrefix": "RGN",
-  "disclaimer": "Dr. Ortiz, her IDs, scores and every count are illustrative, not Regeneron data. Content names are placeholders for MLR-approved assets.",
+  "brand": "Acme Pharma",
+  "tokenPrefix": "ACME",
+  "disclaimer": "Dr. Ortiz, her IDs, scores and every count are illustrative. Content names are placeholders for MLR-approved assets.",
   "hcp": {
     "short": "Dr. Ortiz",
     "full": "Lena Ortiz, MD",
@@ -44,7 +44,7 @@
     ["Address", "6400 Fannin St Houston", "6400 Fannin Street, Houston, TX 77030", "Postal address standardization"],
     ["Email", "LENA.ORTIZ@HOUSTONONC.ORG", "lena.ortiz@houstononc.org", "Lowercase and validate"],
     ["Dates", "10/02/26", "2026-10-02", "One date format everywhere"],
-    ["Patient identity", "vendor token dvt_3MX7", "RGN_P58K2", "Re-tokenize into Regeneron's own token space"],
+    ["Patient identity", "vendor token dvt_3MX7", "ACME_P58K2", "Re-tokenize into the company's own token space"],
     ["Quality checks", "unchecked", "NPI valid, required fields present", "Reject or flag records that fail"]
   ],
   "golden": [
@@ -110,8 +110,8 @@
     "nbe": [["Today, 10:42", "Side effect guide email", true], ["Same day", "Rep alert in CRM", false], ["Within 7 days", "Rep visit, nurse webinar invite", false], ["If no engagement", "Pause email for 14 days", true]]
   },
   "channels": {
-    "email": { "label": "SFMC email", "kind": "push", "n": 296, "conn": "Marketing Cloud connector to Regeneron's SFMC business unit",
-      "steps": ["The decision chooses the side effect guide email for Dr. Ortiz.", "Data 360 writes her and the chosen fields (name, specialty, interest) into a shared data extension in SFMC.", "Journey Builder uses it as its entry source. Sent at 10:42 from \"Regeneron Oncology\".", "Subject: \"Managing immune related side effects: a guide for your team\", with the approved guide and Important Safety Information."],
+    "email": { "label": "SFMC email", "kind": "push", "n": 296, "conn": "Marketing Cloud connector to the brand's SFMC business unit",
+      "steps": ["The decision chooses the side effect guide email for Dr. Ortiz.", "Data 360 writes her and the chosen fields (name, specialty, interest) into a shared data extension in SFMC.", "Journey Builder uses it as its entry source. Sent at 10:42 from the oncology brand team.", "Subject: \"Managing immune related side effects: a guide for your team\", with the approved guide and Important Safety Information."],
       "back": "Sends, opens and clicks flow back to Data 360 through the Marketing Cloud data stream, then on to Snowflake." },
     "crm": { "label": "Rep alert in CRM", "kind": "push", "n": 342, "conn": "API or a write back to Snowflake, then into Veeva CRM. Veeva is not a native Data 360 target.",
       "steps": ["The decision plans a rep visit within 7 days.", "The alert is written to Snowflake or sent through an API.", "Her rep, Marcus Lee, sees: \"Visit Dr. Ortiz this week. She downloaded the side effect guide today and asked about nurse support. Bring the nurse webinar invite.\"", "He visits on Day 21 and logs the call."],

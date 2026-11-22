@@ -14,7 +14,7 @@ export function Hook({ local }: StageProps) {
     <>
       <Head
         title={merged ? 'One *oncologist*' : 'One oncologist, or *six*?'}
-        sub={merged ? `${h.full}. ${h.specialty}, ${h.practice}, ${h.city}.` : `Six fragments from six systems ${scenario.brand} already uses.`}
+        sub={merged ? `${h.full}. ${h.specialty}, ${h.practice}, ${h.city}.` : 'Six fragments from six systems the brand already uses.'}
       />
       <div style={{ position: 'relative', height: 400 }}>
         {scenario.hookFragments.map(([from, t], i) => (

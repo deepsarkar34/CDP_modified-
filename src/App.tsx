@@ -120,7 +120,7 @@ export default function App() {
           <div className="avatar" aria-hidden>{scenario.hcp.initials}</div>
           <span><b style={{ fontWeight: 600 }}>{scenario.hcp.short}</b> <span className="muted">{status(b.step, mode, consent)}</span></span>
         </div>
-        <span className="disclaimer" title={scenario.disclaimer}>Illustrative data, not {scenario.brand} data</span>
+        <span className="disclaimer" title={scenario.disclaimer}>Illustrative data</span>
         <div className="dots" aria-label={`Beat ${beat + 1} of ${BEATS.length}`}>
           {Array.from({ length: stepBeats }, (_, i) => <span key={i} className={i <= b.local ? 'on' : ''} />)}
         </div>

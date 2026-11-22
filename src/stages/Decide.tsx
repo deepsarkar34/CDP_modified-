@@ -134,10 +134,10 @@ export function Decide({ local, consent }: StageProps) {
           {ml ? <MlOutput consent={consent} pickName={pick.name} /> : <RulesOutput pickName={pick.name} />}
           <div style={{ display: 'grid', gap: 12 }}>
             <Win name="Rules first, always">
-              <span style={{ fontSize: 14 }}>The model only ranks what the rules allow, so it can never pick an action Regeneron is not permitted to take. People write the rules and approve the content.</span>
+              <span style={{ fontSize: 14 }}>The model only ranks what the rules allow, so it can never pick an action the brand is not permitted to take. People write the rules and approve the content.</span>
             </Win>
-            <Win name="Where this runs at Regeneron">
-              <span style={{ fontSize: 14 }}>Regeneron has no decision engine today. Rules run in Salesforce Flow on Data 360 events; the ranking model is trained and scored in Snowflake and read through Zero Copy. A dedicated engine can come later without changing this logic.</span>
+            <Win name="Where this runs today">
+              <span style={{ fontSize: 14 }}>There is no decision engine today. Rules run in Salesforce Flow on Data 360 events; the ranking model is trained and scored in Snowflake and read through Zero Copy. A dedicated engine can come later without changing this logic.</span>
             </Win>
           </div>
         </div>

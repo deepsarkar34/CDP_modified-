@@ -10,7 +10,7 @@ export const OPTIONS = scenario.decide.options as DecideOption[];
 
 export const PASSES = [
   { n: 1, name: 'Rules: what is allowed', short: 'Rules', kind: 'Rules',
-    text: 'Remove what Regeneron may not do: consent, contact limits, MLR approved content, the call plan and medical versus promotional boundaries.' },
+    text: 'Remove what the brand may not do: consent, contact limits, MLR approved content, the call plan and medical versus promotional boundaries.' },
   { n: 2, name: 'ML: what works best', short: 'ML', kind: 'Machine learning',
     text: 'A model trained in Snowflake on how similar oncologists responded estimates her chance of engaging with each allowed option, and ranks them.' },
 ] as const;

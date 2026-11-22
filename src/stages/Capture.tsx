@@ -12,7 +12,7 @@ export function Capture({ local, deep }: StageProps) {
     <>
       <Head
         title="Same oncologist, six systems, six *versions*"
-        sub={`Each ${scenario.brand} system sends its own version, in its own format, on its own schedule.`}
+        sub="Each system sends its own version, in its own format, on its own schedule."
         meta={arrived && <span className="tag">{total} records in {scenario.sources.length} systems</span>}
       />
       <div className="grid3">

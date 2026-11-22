@@ -19,7 +19,7 @@ export function Learn({ local }: StageProps) {
     <>
       <Head
         title="What changes *next week*"
-        sub="What Dr. Ortiz does next changes what Regeneron does for her next week."
+        sub="What Dr. Ortiz does next changes what the brand does for her next week."
         meta={<span className="tag">Illustrative numbers</span>}
       />
       <div className="split" style={{ display: 'grid', gap: 16, gridTemplateColumns: 'minmax(260px, 1fr) minmax(0, 1.6fr)', alignItems: 'start' }}>

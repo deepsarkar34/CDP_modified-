@@ -120,14 +120,14 @@ function Experience({ consent }: { consent: boolean }) {
         <Win name="Inbox" right={emailItem ? '10:42' : 'Not sent'} style={{ opacity: emailItem ? 1 : 0.5 }}>
           {emailItem === 'Side effect guide email' ? (
             <div style={{ display: 'grid', gap: 6 }}>
-              <span className="muted" style={{ fontSize: 13 }}>Regeneron Oncology</span>
+              <span className="muted" style={{ fontSize: 13 }}>Oncology brand team</span>
               <span style={{ fontWeight: 600 }}>Managing immune related side effects: a guide for your team</span>
               <span style={{ fontSize: 14 }}>Dear Dr. Ortiz, here is the approved guide for your infusion nurses, with Important Safety Information.</span>
               <span className="tag blue" style={{ justifySelf: 'start' }}>MLR-approved asset</span>
             </div>
           ) : emailItem ? (
             <div style={{ display: 'grid', gap: 6 }}>
-              <span className="muted" style={{ fontSize: 13 }}>Regeneron Oncology</span>
+              <span className="muted" style={{ fontSize: 13 }}>Oncology brand team</span>
               <span style={{ fontWeight: 600 }}>{emailItem}</span>
               <span className="tag" style={{ justifySelf: 'start' }}>Picked by the brand priority list</span>
             </div>
@@ -207,7 +207,7 @@ function LiveEvent({ consent }: { consent: boolean }) {
           {shown >= 5 && pick.email && (
             <motion.div key="email" className="notif" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <span className="app-name"><span>Mail</span><span>10:42</span></span>
-              <strong>Regeneron Oncology</strong>
+              <strong>Oncology brand team</strong>
               <span className="muted" style={{ fontSize: 13 }}>{pick.id === 'guide' ? 'Managing immune related side effects: a guide for your team' : pick.name}</span>
             </motion.div>
           )}
