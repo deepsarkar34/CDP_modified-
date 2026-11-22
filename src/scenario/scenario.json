@@ -1,0 +1,545 @@
+{
+  "brand": "Acme Pharma",
+  "tokenPrefix": "ACME",
+  "hcp": {
+    "short": "Dr. Brown",
+    "full": "John A. Brown, MD",
+    "initials": "JB",
+    "specialty": "Ophthalmology, retina",
+    "masterId": "HCP-004812",
+    "npi": "1234567893"
+  },
+  "hookVariants": [
+    "BROWN, JOHN A",
+    "Dr John Brown",
+    "J A BROWN",
+    "NPI 1234567893",
+    "JBrown@RetinaClinic.example",
+    "cookie ck_9f2a71"
+  ],
+  "sources": [
+    {
+      "id": "crm",
+      "name": "Veeva CRM",
+      "kind": "CRM",
+      "cadence": "Nightly extract",
+      "records": "2 records",
+      "fields": [
+        [
+          "Name",
+          "BROWN, JOHN A",
+          true
+        ],
+        [
+          "Also as",
+          "Dr John Brown",
+          true
+        ],
+        [
+          "Specialty",
+          "Ophth-Ret",
+          true
+        ],
+        [
+          "Address",
+          "12 Main St Tarrytown",
+          true
+        ],
+        [
+          "Last call",
+          "10/14/26, remote",
+          true
+        ]
+      ]
+    },
+    {
+      "id": "rx",
+      "name": "IQVIA prescriptions",
+      "kind": "Rx data",
+      "cadence": "Weekly file",
+      "records": "1 record",
+      "fields": [
+        [
+          "Prescriber",
+          "J A BROWN",
+          true
+        ],
+        [
+          "NPI",
+          "1234567893",
+          false
+        ],
+        [
+          "Market",
+          "Anti-VEGF",
+          false
+        ],
+        [
+          "TRx, 13 wks",
+          "42",
+          false
+        ],
+        [
+          "Decile",
+          "8",
+          false
+        ]
+      ]
+    },
+    {
+      "id": "ehr",
+      "name": "EHR / EMR",
+      "kind": "Clinical",
+      "cadence": "Monthly, via data partner",
+      "records": "1 of many",
+      "phi": true,
+      "fields": [
+        [
+          "Patient",
+          "vendor token dvt_8KQ2",
+          "phi"
+        ],
+        [
+          "Age band",
+          "75 to 79",
+          false
+        ],
+        [
+          "Diagnosis",
+          "H35.32 wet AMD",
+          false
+        ],
+        [
+          "Treating NPI",
+          "1234567893",
+          false
+        ]
+      ]
+    },
+    {
+      "id": "claims",
+      "name": "Claims",
+      "kind": "Claims",
+      "cadence": "Monthly file",
+      "records": "1 of many",
+      "phi": true,
+      "fields": [
+        [
+          "Member",
+          "vendor token dvt_8KQ2",
+          "phi"
+        ],
+        [
+          "Rendering NPI",
+          "1234567893",
+          false
+        ],
+        [
+          "Procedure",
+          "CPT 67028 injection",
+          false
+        ],
+        [
+          "Payer",
+          "Medicare",
+          false
+        ]
+      ]
+    },
+    {
+      "id": "digital",
+      "name": "Web and email",
+      "kind": "Digital",
+      "cadence": "Streamed and daily",
+      "records": "1 record",
+      "fields": [
+        [
+          "Email",
+          "JBrown@RetinaClinic.example",
+          true
+        ],
+        [
+          "Email key",
+          "SUB-55120",
+          false
+        ],
+        [
+          "Web cookie",
+          "ck_9f2a71 (anonymous)",
+          false
+        ],
+        [
+          "Pages",
+          "Dosing guide, MOA video",
+          false
+        ]
+      ]
+    }
+  ],
+  "clean": [
+    [
+      "Name",
+      "BROWN, JOHN A | Dr John Brown",
+      "John A. Brown",
+      "Parse name parts, fix casing"
+    ],
+    [
+      "Duplicates",
+      "2 CRM records",
+      "1 CRM record",
+      "Remove duplicates within a source"
+    ],
+    [
+      "Specialty",
+      "Ophth-Ret | Retina",
+      "Ophthalmology, retina (RET)",
+      "Map every source to one specialty list"
+    ],
+    [
+      "Address",
+      "12 Main St Tarrytown",
+      "12 Main Street, Tarrytown, NY 10591",
+      "Postal address standardization"
+    ],
+    [
+      "Email",
+      "JBrown@RetinaClinic.example",
+      "jbrown@retinaclinic.example",
+      "Lowercase and validate"
+    ],
+    [
+      "Dates",
+      "10/14/26",
+      "2026-10-14",
+      "One date format everywhere"
+    ],
+    [
+      "Patient identity",
+      "vendor token dvt_8KQ2",
+      "{TOKEN}",
+      "Re-tokenize into your own token space"
+    ],
+    [
+      "Quality checks",
+      "unchecked",
+      "NPI valid, required fields present",
+      "Reject or flag records that fail"
+    ]
+  ],
+  "golden": [
+    [
+      "Master ID",
+      "HCP-004812",
+      [
+        "mdm"
+      ]
+    ],
+    [
+      "NPI",
+      "1234567893",
+      [
+        "rx",
+        "claims",
+        "ehr",
+        "ref"
+      ]
+    ],
+    [
+      "Name",
+      "John A. Brown, MD",
+      [
+        "crm",
+        "ref"
+      ]
+    ],
+    [
+      "Specialty",
+      "Ophthalmology, retina",
+      [
+        "crm",
+        "ref"
+      ]
+    ],
+    [
+      "Practice",
+      "12 Main Street, Tarrytown, NY",
+      [
+        "crm",
+        "ref"
+      ]
+    ],
+    [
+      "In practice since",
+      "2008 (18 years)",
+      [
+        "ref"
+      ]
+    ],
+    [
+      "Rx decile",
+      "8 in anti-VEGF",
+      [
+        "rx"
+      ]
+    ],
+    [
+      "Patients treated, 12 mo",
+      "96 (count only)",
+      [
+        "claims",
+        "ehr"
+      ]
+    ],
+    [
+      "Email on file",
+      "jbrown@retinaclinic.example",
+      [
+        "digital",
+        "crm"
+      ]
+    ]
+  ],
+  "masterSources": [
+    [
+      "crm",
+      "Veeva CRM",
+      "Matched to NPI by name and address"
+    ],
+    [
+      "rx",
+      "IQVIA prescriptions",
+      "Matched on NPI"
+    ],
+    [
+      "claims",
+      "Claims",
+      "Matched on rendering NPI"
+    ],
+    [
+      "ehr",
+      "EHR / EMR",
+      "Matched on treating NPI"
+    ],
+    [
+      "digital",
+      "Web and email",
+      "Matched on email held in CRM"
+    ],
+    [
+      "ref",
+      "OneKey reference",
+      "Confirms identity, adds tenure"
+    ]
+  ],
+  "segment": {
+    "name": "Retina priority",
+    "universe": 18400,
+    "rules": [
+      [
+        "Specialty is retina",
+        "Ophthalmology, retina",
+        3150,
+        "specialty_code = 'RET'"
+      ],
+      [
+        "Rx decile 7 or higher",
+        "Decile 8",
+        1960,
+        "rx_decile_antivegf >= 7"
+      ],
+      [
+        "No in-person visit in 60 days",
+        "81 days",
+        1480,
+        "days_since_f2f_visit > 60"
+      ],
+      [
+        "Adoption propensity 0.7 or higher",
+        "0.82",
+        1240,
+        "adoption_propensity >= 0.70"
+      ]
+    ]
+  },
+  "insights": [
+    [
+      "Engagement score",
+      "74 of 100",
+      "insight"
+    ],
+    [
+      "Preferred channel",
+      "Remote, 3 of last 4 calls",
+      "insight"
+    ],
+    [
+      "Last in-person visit",
+      "81 days ago",
+      "insight"
+    ],
+    [
+      "Email consent",
+      "Yes",
+      "consent"
+    ],
+    [
+      "Adoption propensity",
+      "0.82",
+      "model"
+    ]
+  ],
+  "channels": {
+    "crm": 1240,
+    "email": 980,
+    "media": 860,
+    "rt": 140,
+    "web": 610
+  },
+  "cleanRoomOverlap": 870,
+  "decide": {
+    "baseline": 15,
+    "valuePerEngaged": 2000,
+    "trigger": "downloaded the dosing guide yesterday",
+    "options": [
+      {
+        "id": "call",
+        "name": "Rep remote call",
+        "response": 34,
+        "cost": 150,
+        "costLabel": "$150 rep time",
+        "priority": 2,
+        "email": false
+      },
+      {
+        "id": "webinar",
+        "name": "Webinar invite email",
+        "response": 21,
+        "cost": 5,
+        "costLabel": "$5",
+        "priority": 1,
+        "email": true
+      },
+      {
+        "id": "none",
+        "name": "Do nothing this week",
+        "response": 15,
+        "cost": 0,
+        "costLabel": "$0",
+        "priority": 3,
+        "email": false
+      },
+      {
+        "id": "visit",
+        "name": "Rep in-person visit",
+        "blocked": "Prefers remote; in-person slots full this week",
+        "costLabel": "Highest",
+        "email": false
+      },
+      {
+        "id": "dosing",
+        "name": "Dosing email",
+        "blocked": "Dosing content already emailed twice this month",
+        "costLabel": "$5",
+        "email": true
+      }
+    ],
+    "capacity": {
+      "slots": 6,
+      "doctors": [
+        [
+          "Dr. Patel",
+          0.91,
+          3
+        ],
+        [
+          "Dr. Okafor",
+          0.88,
+          15
+        ],
+        [
+          "Dr. Chen",
+          0.87,
+          9
+        ],
+        [
+          "Dr. Rivera",
+          0.86,
+          12
+        ],
+        [
+          "Dr. Kim",
+          0.85,
+          8
+        ],
+        [
+          "Dr. Novak",
+          0.84,
+          4
+        ],
+        [
+          "Dr. Brown",
+          0.82,
+          19
+        ],
+        [
+          "Dr. Shah",
+          0.8,
+          14
+        ]
+      ],
+      "patelNote": "She would prescribe anyway; a call adds only 3 points."
+    },
+    "why": [
+      "Downloaded the dosing guide yesterday",
+      "81 days since last visit",
+      "Prefers remote calls"
+    ],
+    "topic": "Approved dosing discussion",
+    "nbe": [
+      [
+        "Within 5 days",
+        "Remote call",
+        false
+      ],
+      [
+        "Day after the call",
+        "Approved dosing summary email",
+        true
+      ],
+      [
+        "Two weeks later",
+        "Retina webinar invite",
+        true
+      ],
+      [
+        "If no engagement",
+        "Pause email for the month",
+        true
+      ]
+    ]
+  },
+  "learn": {
+    "outcomes": [
+      {
+        "id": "engages",
+        "label": "Rep accepts, Dr. Brown engages",
+        "change": "Predicted response to a remote call: 34% to 41%",
+        "next": "Dosing summary email, as planned"
+      },
+      {
+        "id": "dismiss",
+        "label": "Rep dismisses: already discussed",
+        "change": "Dosing topics suppressed for 30 days. Rules learn the same day.",
+        "next": "Webinar invite"
+      },
+      {
+        "id": "none",
+        "label": "No response",
+        "change": "Estimated lift: +19 to +11",
+        "next": "Nothing for 14 days (fatigue rule)"
+      }
+    ],
+    "holdoutShare": 0.1,
+    "holdoutDays": 90
+  }
+}
