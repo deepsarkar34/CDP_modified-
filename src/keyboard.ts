@@ -24,9 +24,8 @@ export function useKeyboard(opts: { presenterWindow?: boolean } = {}) {
       const k = e.key;
       if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); s.next(); }
       else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); s.prev(); }
-      else if (/^[1-9]$/.test(k) && +k <= STEPS.length) s.jumpStep(+k - 1);
+      else if (/^[0-9]$/.test(k)) { const n = k === '0' ? 10 : +k; if (n <= STEPS.length) s.jumpStep(n - 1); }
       else if (k === 'd' || k === 'D') s.toggleDeepDive();
-      else if (k === 'v' || k === 'V') s.cycleVendor();
       else if (k === 'c' || k === 'C') s.toggleConsent();
       else if (k === 'm' || k === 'M') s.toggleMode();
       else if (k === 'r' || k === 'R') s.reset();

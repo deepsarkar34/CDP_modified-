@@ -1,21 +1,19 @@
-# CDP Journey Demo
+# CDP Journey: Dr. Ortiz (Regeneron, Snowflake + Salesforce Data 360)
 
-A live, presenter-driven demo that explains how a customer data platform (CDP) works by following one HCP, Dr. Brown, from five messy source systems to five live channels. It is built for 10–15 minute pitches to pharma clients and prospects in a mixed room.
+A live, presenter-driven demo that follows one medical oncologist, Dr. Lena Ortiz, from six source systems through Snowflake engineering and AI, Salesforce Data 360, a decided next action, live channels and a learning loop.
 
-**Question → Capture → Clean → Master → Resolve → Segment → Decide → Activate → Learn**
+**Question → Capture → Clean → Master → AI and ML → Resolve → Audiences → Decide → Activate → Learn**
 
-It is vendor-neutral by default, with one-click relabelling for **Salesforce Data 360**, **Adobe Real-Time CDP** and a composable **Databricks** stack. All people, IDs and counts are fictional.
+All people, IDs, scores and counts are illustrative, not Regeneron data. Content names are placeholders for MLR-approved assets. Built from the "Dr. Ortiz's Data Journey" HTML brief; it started as a copy of the Dr. Brown demo in `deepsarkar34/CDP`, which is unchanged.
 
 ## Run it
 
 ```bash
 npm install
-npm run dev          # development, http://localhost:5173
+npm run dev          # http://localhost:5173
 npm run build        # production build into dist/
 npm run preview      # serve the build, http://localhost:4173
 ```
-
-The build is static, so it runs offline. The fonts load from Google Fonts when online and fall back to system fonts otherwise.
 
 ## Presenting
 
@@ -23,36 +21,39 @@ The build is static, so it runs offline. The fonts load from Google Fonts when o
 |---|---|
 | → / Space / PageDown | next beat (most clickers work) |
 | ← / PageUp | previous beat |
-| 1–9 | jump to a step |
+| 1–9, 0 | jump to a step (0 = step 10, Learn) |
 | D | technical detail on/off |
-| V | cycle vendor |
-| C | toggle Dr. Brown's email consent (what-if) |
-| M | Decide step: switch between Rules only and Rules plus machine learning |
-| P | open presenter notes (notes, next beat, 12:00 timer) |
+| C | toggle Dr. Ortiz's email consent (what-if) |
+| M | Decide step: Rules only vs Rules plus machine learning |
+| P | presenter notes (notes, next beat, 18:00 timer) |
 | F | fullscreen |
 | T | light/dark theme |
 | R | reset |
 
-Put the main window on the projector (press F) and the presenter window on your laptop. The two windows stay in sync, so you can drive the demo from either one.
+## What each step shows
 
-## Branding
+1. **Question**: six fragments, one per system, merge into Lena Ortiz, MD.
+2. **Capture**: 8 records across 6 systems; batch through Openflow to Snowflake, web streamed to Data 360.
+3. **Clean**: bronze to silver in Snowflake; patient tokens re-tokenized to Regeneron's space.
+4. **Master**: one golden record, golden ID HCP-00731, matched in Snowflake against OneKey.
+5. **AI and ML**: Snowflake ML likelihood score 0.81; Cortex turns a call note into a topic; Snowflake Intelligence answers a plain-English question.
+6. **Resolve**: Zero Copy into Data 360; on Day 3 a tracked email click links her anonymous web device.
+7. **Audiences**: brand manager builds Side effect priority (4,120 to 342); a real-time audience she enters at 10:16.
+8. **Decide**: two passes, rules then ML. ML picks the side effect guide email (34%); Rules only picks the webinar invite.
+9. **Activate**: push and pull to five channels; what she sees; the 10:14 to 10:42 real-time path; one story across channels.
+10. **Learn**: three outcomes and what changes next week; what flows back to Snowflake; a 34-oncologist holdout (31% vs 12%).
 
-The look follows indegene.com: navy chrome, white stage, the Outfit typeface, and one blue to purple to magenta gradient word per heading. Magenta is reserved for conflicts and alerts. The colour tokens are at the top of `src/styles.css`.
+## Customize
 
-To use the official logo, put a white version at `src/assets/logo.svg` (or `logo.png`). Until then the name is shown as plain text.
-
-## Customize per client
-
-- `src/scenario/scenario.json`: brand name, Dr. Brown's data, segment counts and channel reach.
-- `src/beats.ts`: the script, with one presenter note per beat.
-- `src/vendors/index.ts`: product terms for each vendor. Check them against current vendor docs before an important pitch, because vendors rename products often.
+- `src/scenario/scenario.json`: every name, number and piece of copy for Dr. Ortiz.
+- `src/beats.ts`: the script, one presenter note per beat.
+- `src/decision.ts`: the two-pass decision logic.
+- Logo: put a white version at `src/assets/logo.svg` (or `.png`).
 
 ## Quality checks
 
 ```bash
-npm test                 # unit tests (beat engine, consent logic, vendor packs)
-npm run build && npm run preview &   # then:
-npm run walkthrough      # clicks every beat in every vendor mode; fails on console errors; screenshots in artifacts/
+npm test                               # unit tests for the story numbers and the decision
+npm run build && npm run preview &
+npm run walkthrough                    # every beat, both decision modes, narrow screen; screenshots in artifacts/
 ```
-
-Design decisions are recorded in [`docs/spec.md`](docs/spec.md).

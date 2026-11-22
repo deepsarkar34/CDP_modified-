@@ -4,22 +4,22 @@ import scenario from '../scenario/scenario.json';
 import type { StageProps } from './types';
 import { DeepDive, Head, Win } from '../components/ui';
 
-const SHORT: Record<string, string> = { crm: 'CRM', rx: 'Rx', claims: 'Claims', ehr: 'EHR', digital: 'Digital', ref: 'OneKey', mdm: 'MDM' };
+const SHORT: Record<string, string> = { crm: 'Veeva', rx: 'IQVIA', claims: 'Claims', sfmc: 'SFMC', ref: 'OneKey', match: 'Snowflake' };
 
-export function Master({ local, v, deep }: StageProps) {
+export function Master({ local, deep }: StageProps) {
   const [sel, setSel] = useState<string | null>(null);
   const merged = local >= 1;
   const stamped = local >= 2;
   return (
     <>
       <Head
-        title={merged ? 'One golden *record*' : 'Six records, one *doctor*?'}
-        sub={stamped ? 'Matched on NPI, name and address. Master ID issued.' : merged ? 'Each field shows the source it came from.' : 'Clean records from six sources, not yet matched.'}
-        meta={merged && <span className="tag ok">Merged 6 into 1</span>}
+        title={merged ? 'One golden *record*' : 'Five sources, one *oncologist*?'}
+        sub={stamped ? 'Matched in Snowflake, checked against OneKey. Golden ID issued.' : merged ? 'Each field shows the source it came from.' : 'Clean silver records, not yet matched.'}
+        meta={merged && <span className="tag ok">Merged into 1</span>}
       />
       <div className="split" style={{ display: 'grid', gap: 16, gridTemplateColumns: merged ? 'minmax(230px, 1fr) minmax(0, 1.7fr)' : '1fr', alignItems: 'start' }}>
         <motion.div layout style={{ display: 'grid', gap: 8, gridTemplateColumns: merged ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))' }}>
-          {merged && <span className="muted" style={{ fontSize: 13.5 }}>Sources (6). Click one to see what it contributed.</span>}
+          {merged && <span className="muted" style={{ fontSize: 13.5 }}>Sources ({scenario.masterSources.length}). Click one to see what it contributed.</span>}
           {scenario.masterSources.map(([id, name, how]) => (
             <motion.button layout key={id} transition={{ type: 'spring', stiffness: 260, damping: 30 }}
               onClick={() => setSel(sel === id ? null : id)} aria-pressed={sel === id} className="win"
@@ -32,11 +32,11 @@ export function Master({ local, v, deep }: StageProps) {
 
         {merged && (
           <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4, delay: 0.25 }}>
-            <Win name="Golden record" right={stamped ? 'Match confidence 0.98' : 'Matching'} flush>
+            <Win name="Golden record" right={stamped ? 'gold.hcp' : 'Matching'} flush>
               <table className="dt">
                 <tbody>
                   {scenario.golden.map(([k, val, srcs], i) => {
-                    const isId = k === 'Master ID';
+                    const isId = k === 'Golden ID';
                     const hit = sel ? (srcs as string[]).includes(sel) : false;
                     if (isId && !stamped) return null;
                     return (
@@ -62,13 +62,13 @@ export function Master({ local, v, deep }: StageProps) {
         <table className="dt">
           <thead><tr><th>Rule</th><th>Logic</th><th>Type</th></tr></thead>
           <tbody>
-            <tr><td>NPI exact</td><td><code>rx.npi = claims.rendering_npi = ehr.treating_npi</code></td><td>Deterministic</td></tr>
-            <tr><td>CRM to NPI</td><td>Fuzzy name, standardized address, specialty</td><td>Scored, steward review below threshold</td></tr>
-            <tr><td>Digital to CRM</td><td>Exact normalized email</td><td>Deterministic</td></tr>
-            <tr><td>Survivorship</td><td>Name and address from OneKey, email by recency, Rx fields from Rx only</td><td>Per-field policy</td></tr>
+            <tr><td>NPI exact</td><td><code>rx.npi = claims.treating_npi = onekey.npi</code></td><td>Deterministic</td></tr>
+            <tr><td>Veeva to NPI</td><td>Name and standardized address, confirmed by OneKey</td><td>Scored, steward review below threshold</td></tr>
+            <tr><td>SFMC to Veeva</td><td>Exact normalized email</td><td>Deterministic</td></tr>
+            <tr><td>Survivorship</td><td>Name, specialty and practice from OneKey; email by recency; Rx fields from IQVIA only</td><td>Per-field policy</td></tr>
           </tbody>
         </table>
-        <p>Run by: {v.mdm}. Output lands in the {v.layers.gold.toLowerCase()} layer.</p>
+        <p>Mastering happens once, in Snowflake. Data 360 receives the golden ID and never re-decides it.</p>
       </DeepDive>
     </>
   );

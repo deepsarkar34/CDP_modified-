@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { ComponentType } from 'react';
 import { useDemo, currentBeat } from './store';
 import { BEATS, STEPS } from './beats';
-import { VENDORS, VENDOR_ORDER } from './vendors';
+import { VENDORS } from './vendors';
 import { useKeyboard, openPresenter } from './keyboard';
 import scenario from './scenario/scenario.json';
 import { Logo } from './components/Logo';
@@ -10,44 +10,44 @@ import { Hook } from './stages/Hook';
 import { Capture } from './stages/Capture';
 import { Clean } from './stages/Clean';
 import { Master } from './stages/Master';
+import { AiMl } from './stages/AiMl';
 import { Resolve } from './stages/Resolve';
-import { Segment } from './stages/Segment';
+import { Audiences } from './stages/Audiences';
 import { Decide } from './stages/Decide';
 import { Activate } from './stages/Activate';
 import { Learn } from './stages/Learn';
-import { SUBLAYERS, isActive, decisionFor, type Mode } from './decision';
+import { PASSES, isActive, decisionLabel, type Mode } from './decision';
 import type { StageProps } from './stages/types';
 
-const STAGES: ComponentType<StageProps>[] = [Hook, Capture, Clean, Master, Resolve, Segment, Decide, Activate, Learn];
-const DECIDE = 6;
+const STAGES: ComponentType<StageProps>[] = [Hook, Capture, Clean, Master, AiMl, Resolve, Audiences, Decide, Activate, Learn];
+const DECIDE = 7;
 
-// Short, factual status per step: what the system knows about him right now.
+// Short, factual status per step: what the systems know about her right now.
 const status = (step: number, mode: Mode, consent: boolean) => [
   '6 fragments, not linked yet',
-  '6 records in 5 systems',
+  '8 records in 6 systems',
   'Records standardized, patient IDs re-tokenized',
-  `Master ID ${scenario.hcp.masterId}`,
-  '5 identifiers on one profile',
-  `In ${scenario.segment.name} (1,240 HCPs)`,
-  `Next action: ${decisionFor(mode, consent).label.toLowerCase()}`,
-  'Reached in 5 channels',
-  'Outcome feeds next week\'s decision',
+  `Golden ID ${scenario.hcp.goldenId}`,
+  'Likelihood score 0.81, call note topic: side effect management',
+  'Recognized by email, CRM ID and web device',
+  `In ${scenario.audience.name} (342 oncologists) and the real-time audience since 10:16`,
+  `Next action: ${decisionLabel(mode, consent).toLowerCase()}`,
+  'Reached by email, her rep, HCP media and the website',
+  'Her response changes next week',
 ][step];
 
-type ZoneKey = 'sources' | 'engineering' | 'cdp' | 'decision' | 'channels' | 'feedback';
+type ZoneKey = 'sources' | 'engineering' | 'cdp' | 'decision' | 'channels';
 const ZONES: { key: ZoneKey; steps: number[] }[] = [
   { key: 'sources', steps: [0, 1] },
-  { key: 'engineering', steps: [2, 3] },
-  { key: 'cdp', steps: [4, 5] },
-  { key: 'decision', steps: [6] },
-  { key: 'channels', steps: [7] },
-  { key: 'feedback', steps: [8] },
+  { key: 'engineering', steps: [2, 3, 4] },
+  { key: 'cdp', steps: [5, 6] },
+  { key: 'decision', steps: [7] },
+  { key: 'channels', steps: [8, 9] },
 ];
 
 export default function App() {
   useKeyboard();
-  const { beat, vendor, deepDive, consent, mode, sub, subPlaying, setSub, requestSub, next, prev, jumpStep, setVendor, toggleDeepDive, toggleConsent } = useDemo();
-  const zoneName = (k: ZoneKey) => (k === 'decision' ? 'Decision layer' : k === 'feedback' ? 'Feedback' : v.zones[k]);
+  const { beat, vendor, deepDive, consent, mode, sub, subPlaying, setSub, requestSub, next, prev, jumpStep, toggleDeepDive, toggleConsent } = useDemo();
   const b = currentBeat(beat);
   const v = VENDORS[vendor];
   const Stage = STAGES[b.step];
@@ -62,11 +62,7 @@ export default function App() {
             <span className="divider" aria-hidden />
             <span className="title"><b>Customer data platform</b> walkthrough for {scenario.brand}</span>
           </div>
-          <div className="seg" role="group" aria-label="Platform">
-            {VENDOR_ORDER.map(id => (
-              <button key={id} aria-pressed={vendor === id} onClick={() => setVendor(id)}>{id === 'neutral' ? 'Any platform' : VENDORS[id].label}</button>
-            ))}
-          </div>
+          <span className="stack-label">Snowflake + Salesforce Data 360</span>
           <button className={`tog ${deepDive ? 'on' : ''}`} onClick={toggleDeepDive} aria-pressed={deepDive}><span className="dot" />Technical <kbd>D</kbd></button>
           <button className={`tog ${consent ? '' : 'alert'}`} onClick={toggleConsent} aria-pressed={!consent}><span className="dot" />Email consent {consent ? 'on' : 'off'} <kbd>C</kbd></button>
           <button className="tog" onClick={openPresenter}>Notes <kbd>P</kbd></button>
@@ -75,9 +71,7 @@ export default function App() {
         <nav className="map" aria-label="Pipeline">
           {ZONES.map(z => (
             <div key={z.key} className="zone">
-              <div className="zone-name" title={zoneName(z.key)}>
-                {zoneName(z.key)}{z.key === 'cdp' && v.partners ? <span className="partner">with partners</span> : null}
-              </div>
+              <div className="zone-name" title={v.zones[z.key]}>{v.zones[z.key]}</div>
               <div className="zone-steps">
                 {z.steps.map(i => {
                   const cur = i === b.step;
@@ -91,17 +85,17 @@ export default function App() {
                 })}
               </div>
               {z.key === 'decision' && (
-                <div className="subs" aria-label="Decision layer sublayers">
-                  {SUBLAYERS.map(s => {
-                    const active = isActive(s.n, mode);
+                <div className="subs" aria-label="Decision passes">
+                  {PASSES.map(p => {
+                    const active = isActive(p.n, mode);
                     const here = b.step === DECIDE;
-                    const done = active && (b.step > DECIDE || (here && sub >= s.n));
-                    const live = active && here && sub === s.n && subPlaying;
+                    const done = active && (b.step > DECIDE || (here && sub >= p.n));
+                    const live = active && here && sub === p.n && subPlaying;
                     return (
-                      <button key={s.n} className={`sl ${done ? 'done' : ''} ${live ? 'live' : ''} ${active ? '' : 'off'}`}
-                        title={`Sublayer ${s.n}: ${s.name}${active ? '' : ' (off in Rules only)'}`}
-                        onClick={() => { if (!active) return; if (here) setSub(s.n, s.n < 5); else { requestSub(s.n); jumpStep(DECIDE); } }}>
-                        {s.short}
+                      <button key={p.n} className={`sl ${done ? 'done' : ''} ${live ? 'live' : ''} ${active ? '' : 'off'}`}
+                        title={`Pass ${p.n}: ${p.name}${active ? '' : ' (off in Rules only)'}`}
+                        onClick={() => { if (!active) return; if (here) setSub(p.n, true); else { requestSub(p.n); jumpStep(DECIDE); } }}>
+                        {p.n} {p.short}
                       </button>
                     );
                   })}
@@ -126,6 +120,7 @@ export default function App() {
           <div className="avatar" aria-hidden>{scenario.hcp.initials}</div>
           <span><b style={{ fontWeight: 600 }}>{scenario.hcp.short}</b> <span className="muted">{status(b.step, mode, consent)}</span></span>
         </div>
+        <span className="disclaimer" title={scenario.disclaimer}>Illustrative data, not {scenario.brand} data</span>
         <div className="dots" aria-label={`Beat ${beat + 1} of ${BEATS.length}`}>
           {Array.from({ length: stepBeats }, (_, i) => <span key={i} className={i <= b.local ? 'on' : ''} />)}
         </div>

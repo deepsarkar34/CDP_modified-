@@ -5,28 +5,27 @@ import { DeepDive, Head, Reveal, Win } from '../components/ui';
 
 const CX = 340, CY = 170;
 interface Node { x: number; y: number; k: string; val: string; rule: string; at: number; cookie?: boolean }
-const VIEWS = ['Dosing guide', 'Dosing guide', 'MOA video', 'Safety data', 'Dosing calculator', 'Trial results', 'Contact a rep'];
+const VIEWS = ['Day 1: downloaded efficacy summary', 'Day 1: dosing page', 'Day 1: efficacy page'];
 
 export function Resolve({ local, v, deep }: StageProps) {
-  const loggedIn = local >= 3;
+  const loggedIn = local >= 3; // Day 3: she clicks a tracked email link
   const nodes: Node[] = [
-    { x: 140, y: 60, k: 'Master ID', val: scenario.hcp.masterId, rule: 'golden record', at: 0 },
-    { x: 540, y: 60, k: 'Email', val: 'jbrown@retinaclinic.example', rule: 'exact email', at: 1 },
-    { x: 540, y: 280, k: 'Email platform key', val: 'SUB-55120', rule: 'via email', at: 1 },
-    { x: 140, y: 280, k: 'Portal login', val: 'drbrown.ret', rule: 'master ID at sign-up', at: 1 },
-    { x: 340, y: 335, k: 'Web cookie', val: 'ck_9f2a71', rule: loggedIn ? 'linked at login' : 'anonymous', at: 2, cookie: true },
+    { x: 140, y: 60, k: 'Golden ID (Snowflake)', val: scenario.hcp.goldenId, rule: 'same golden ID', at: 0 },
+    { x: 540, y: 60, k: 'Email', val: 'lena.ortiz@houstononc.org', rule: 'exact email', at: 1 },
+    { x: 540, y: 280, k: 'SFMC subscriber', val: 'SUB-77310', rule: 'via exact email', at: 1 },
+    { x: 140, y: 280, k: 'Veeva CRM ID', val: '0013A00001xYz', rule: 'same golden ID', at: 1 },
+    { x: 340, y: 335, k: 'Web device', val: '7f3a…', rule: loggedIn ? 'linked at email click' : 'anonymous', at: 2, cookie: true },
   ];
   const cookie = nodes[4];
   const linked = nodes.filter(n => local >= n.at && (!n.cookie || loggedIn)).length;
   return (
     <>
       <Head
-        title={loggedIn ? 'Anonymous visits, now *his*' : 'One profile, every *identifier*'}
-        sub={`${v.profile}, built from the golden record (${v.ingest})`}
+        title={loggedIn ? 'Her anonymous visit, now *hers*' : 'One profile, every *identifier*'}
+        sub={loggedIn ? 'Day 3: she clicks a tracked link in an email, and the device joins her profile.' : `${v.profile} built from the gold record, score and call note topic (${v.ingest})`}
         meta={<span className="tag blue">{linked} of 5 identifiers linked</span>}
       />
-      {v.partners?.identity && <span className="tag" style={{ justifySelf: 'start' }}>Identity from a partner tool or Databricks CustomerLake (preview)</span>}
-      <div className="split" style={{ display: 'grid', gap: 18, gridTemplateColumns: 'minmax(0, 1.6fr) minmax(280px, 1fr)', alignItems: 'start' }}>
+            <div className="split" style={{ display: 'grid', gap: 18, gridTemplateColumns: 'minmax(0, 1.6fr) minmax(280px, 1fr)', alignItems: 'start' }}>
         <svg viewBox="0 0 680 370" role="img" aria-label="Identity graph" style={{ width: '100%', height: 'auto', maxHeight: 360, display: 'block' }}>
           <defs>
             <linearGradient id="hub" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3783C2" /><stop offset=".55" stopColor="#7167B8" /><stop offset="1" stopColor="#DC1380" /></linearGradient>
@@ -50,7 +49,7 @@ export function Resolve({ local, v, deep }: StageProps) {
             );
           })}
           {VIEWS.map((_, i) => {
-            const ox = cookie.x - 90 + i * 30, oy = cookie.y + 34;
+            const ox = cookie.x - 30 + i * 30, oy = cookie.y + 34;
             return (
               <motion.circle key={i} r={6} fill="#DC1380" initial={false}
                 animate={local < 2 ? { cx: ox, cy: oy, opacity: 0 } : loggedIn ? { cx: CX, cy: CY, opacity: [1, 1, 0] } : { cx: ox, cy: oy, opacity: 1 }}
@@ -59,17 +58,17 @@ export function Resolve({ local, v, deep }: StageProps) {
           })}
           <circle cx={CX} cy={CY} r={56} fill="url(#hub)" />
           <text x={CX} y={CY - 4} textAnchor="middle" fontSize={15} fontWeight={600} fill="#fff">{scenario.hcp.short}</text>
-          <text x={CX} y={CY + 15} textAnchor="middle" fontSize={11.5} fill="#fff" opacity={0.85}>{scenario.hcp.masterId}</text>
+          <text x={CX} y={CY + 15} textAnchor="middle" fontSize={11.5} fill="#fff" opacity={0.85}>{scenario.hcp.goldenId}</text>
         </svg>
         <div style={{ display: 'grid', gap: 12 }}>
           <Reveal when={local >= 2}>
-            <Win name="Web sessions" right={loggedIn ? 'linked to profile' : 'anonymous'} flush>
+            <Win name="HCP website activity" right={loggedIn ? 'linked to profile' : 'anonymous'} flush>
               <table className="dt">
                 <tbody>
                   {VIEWS.map((p, i) => (
                     <tr key={i}>
                       <td>{p}</td>
-                      <td style={{ textAlign: 'right' }}><span className={`tag ${loggedIn ? 'blue' : ''}`} style={{ fontSize: 11.5 }}>{loggedIn ? scenario.hcp.short : 'ck_9f2a71'}</span></td>
+                      <td style={{ textAlign: 'right' }}><span className={`tag ${loggedIn ? 'blue' : ''}`} style={{ fontSize: 11.5 }}>{loggedIn ? scenario.hcp.short : 'Device 7f3a…'}</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -78,15 +77,18 @@ export function Resolve({ local, v, deep }: StageProps) {
           </Reveal>
         </div>
       </div>
-      <Reveal when={loggedIn} delay={0.9}>
+      <Reveal when={local >= 1} delay={0.2}>
         <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))' }}>
-          {scenario.insights.map(([k, val, kind]) => (
-            <div key={k} className="win" style={{ padding: '12px 14px', gap: 4 }}>
-              <span className="muted" style={{ fontSize: 13 }}>{k}</span>
-              <span style={{ fontSize: 20, fontWeight: 600 }}>{val}</span>
-              <span style={{ fontSize: 12, color: 'var(--faint)' }}>{kind === 'model' ? 'Model score' : kind === 'consent' ? 'Consent record' : v.insights}</span>
-            </div>
-          ))}
+          {scenario.insights.map(([k, val, src]) => {
+            const pending = k === 'Interests' && !loggedIn;
+            return (
+              <div key={k} className="win" style={{ padding: '12px 14px', gap: 4 }}>
+                <span className="muted" style={{ fontSize: 13 }}>{k}</span>
+                <span style={{ fontSize: 20, fontWeight: 600, color: pending ? 'var(--faint)' : undefined }}>{pending ? 'None yet' : val}</span>
+                <span style={{ fontSize: 12, color: 'var(--faint)' }}>{src}</span>
+              </div>
+            );
+          })}
         </div>
       </Reveal>
       <DeepDive show={deep} title={v.identity}>
@@ -94,8 +96,8 @@ export function Resolve({ local, v, deep }: StageProps) {
           <tbody>
             <tr><td className="muted" style={{ width: 220 }}>Golden record arrives via</td><td>{v.ingest}</td></tr>
             <tr><td className="muted">Data model</td><td>{v.dataModel}</td></tr>
-            <tr><td className="muted">Match rules</td><td>Exact master ID, exact normalized email, login to master ID, cookie to login. All deterministic.</td></tr>
-            <tr><td className="muted">Profile key</td><td>{v.profile} has its own technical key. The business ID stays <code>{scenario.hcp.masterId}</code>.</td></tr>
+            <tr><td className="muted">Match rules</td><td>Same golden ID, exact normalized email, device to email on a tracked click. All deterministic.</td></tr>
+            <tr><td className="muted">Profile key</td><td>{v.profile} has its own technical key. The business ID stays <code>{scenario.hcp.goldenId}</code>, decided in Snowflake.</td></tr>
           </tbody>
         </table>
       </DeepDive>

@@ -37,7 +37,7 @@ export interface DemoActions {
   hydrate: (s: Partial<DemoState>) => void;
 }
 
-export const initialState: DemoState = { beat: 0, vendor: 'neutral', deepDive: false, consent: true, mode: 'ml', sub: 0, subPlaying: false, subRequest: null, startedAt: null };
+export const initialState: DemoState = { beat: 0, vendor: 'salesforce', deepDive: false, consent: true, mode: 'ml', sub: 0, subPlaying: false, subRequest: null, startedAt: null };
 
 const started = (s: DemoState) => s.startedAt ?? Date.now();
 
@@ -63,10 +63,6 @@ export const currentBeat = (beat: number) => BEATS[beat];
 /** Channel reach counts. Consent is a per-channel filter: it only affects email. */
 export function channelCounts(consent: boolean) {
   const c = scenario.channels;
-  return { ...c, email: consent ? c.email : c.email - 1 };
-}
-
-/** Which channels reach Dr. Brown himself. */
-export function brownChannels(consent: boolean) {
-  return { crm: true, email: consent, media: true, rt: true, web: true };
+  const n = Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v.n])) as Record<keyof typeof c, number>;
+  return { ...n, email: consent ? n.email : n.email - 1 };
 }

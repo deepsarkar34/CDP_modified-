@@ -7,8 +7,7 @@ import { DeepDive, Head, Win } from '../components/ui';
 const ROW_BEAT: Record<string, number> = { Duplicates: 2, 'Patient identity': 3, 'Quality checks': 3 };
 
 export function Clean({ local, v, deep }: StageProps) {
-  const token = `${scenario.tokenPrefix}_T41C9`;
-  const rows = scenario.clean.map(r => (r[2] === '{TOKEN}' ? [r[0], r[1], token, r[3]] : r));
+  const rows = scenario.clean;
   const done = (f: string) => local >= (ROW_BEAT[f] ?? 1);
   const passed = rows.filter(r => done(r[0])).length;
   const layer = local === 0 ? v.layers.bronze : v.layers.silver;
@@ -19,7 +18,7 @@ export function Clean({ local, v, deep }: StageProps) {
         sub={`${v.zones.engineering}, ${v.layers.bronze.toLowerCase()} to ${v.layers.silver.toLowerCase()}`}
         meta={<span className={`tag ${passed === rows.length ? 'ok' : ''}`}>{passed} of {rows.length} rules applied</span>}
       />
-      <Win name={`hcp_brown_john / ${layer}`} right={local === 0 ? 'unvalidated' : 'validated'} flush>
+      <Win name={`hcp_ortiz_lena / ${layer}`} right={local === 0 ? 'unvalidated' : 'validated'} flush>
         <table className="dt">
           <thead><tr><th style={{ width: 170 }}>Field</th><th style={{ width: '42%' }}>Value</th><th>Rule</th></tr></thead>
           <tbody>
@@ -47,8 +46,8 @@ export function Clean({ local, v, deep }: StageProps) {
         <table className="dt">
           <thead><tr><th>Layer</th><th>What happens</th><th>Typical tooling</th></tr></thead>
           <tbody>
-            <tr><td>{v.layers.bronze}</td><td>Append-only raw copy with full lineage</td><td>Ingestion jobs, CDC, file loaders</td></tr>
-            <tr><td>{v.layers.silver}</td><td>Standardize, dedupe within source, NPI check digit, re-tokenize</td><td>SQL or dbt models, address and name parsing, tokenization vendor</td></tr>
+            <tr><td>{v.layers.bronze}</td><td>Append-only raw copy with full lineage</td><td>Openflow connectors, file loads</td></tr>
+            <tr><td>{v.layers.silver}</td><td>Standardize, dedupe within source, NPI check digit, re-tokenize</td><td>Snowpark and dynamic tables on every refresh; Cortex Code helps engineers write the rules</td></tr>
             <tr><td>Quality gate</td><td>Failed records are quarantined and reported, not dropped</td><td>Data quality tests and alerts</td></tr>
           </tbody>
         </table>

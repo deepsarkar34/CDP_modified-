@@ -1,545 +1,152 @@
 {
-  "brand": "Acme Pharma",
-  "tokenPrefix": "ACME",
+  "brand": "Regeneron",
+  "tokenPrefix": "RGN",
+  "disclaimer": "Dr. Ortiz, her IDs, scores and every count are illustrative, not Regeneron data. Content names are placeholders for MLR-approved assets.",
   "hcp": {
-    "short": "Dr. Brown",
-    "full": "John A. Brown, MD",
-    "initials": "JB",
-    "specialty": "Ophthalmology, retina",
-    "masterId": "HCP-004812",
-    "npi": "1234567893"
+    "short": "Dr. Ortiz",
+    "full": "Lena Ortiz, MD",
+    "first": "Lena",
+    "initials": "LO",
+    "specialty": "Medical Oncology",
+    "practice": "Houston Cancer Associates",
+    "city": "Houston, TX",
+    "goldenId": "HCP-00731",
+    "npi": "14•••••213",
+    "rep": "Marcus Lee",
+    "brandManager": "Priya"
   },
-  "hookVariants": [
-    "BROWN, JOHN A",
-    "Dr John Brown",
-    "J A BROWN",
-    "NPI 1234567893",
-    "JBrown@RetinaClinic.example",
-    "cookie ck_9f2a71"
+  "hookFragments": [
+    ["Veeva CRM", "ORTIZ, LENA MD"],
+    ["IQVIA", "L ORTIZ"],
+    ["Claims and EHR", "Treating NPI 14•••••213"],
+    ["SFMC email", "LENA.ORTIZ@HOUSTONONC.ORG"],
+    ["HCP website", "Device 7f3a… (anonymous)"],
+    ["OneKey", "Ortiz, Lena"]
   ],
   "sources": [
-    {
-      "id": "crm",
-      "name": "Veeva CRM",
-      "kind": "CRM",
-      "cadence": "Nightly extract",
-      "records": "2 records",
-      "fields": [
-        [
-          "Name",
-          "BROWN, JOHN A",
-          true
-        ],
-        [
-          "Also as",
-          "Dr John Brown",
-          true
-        ],
-        [
-          "Specialty",
-          "Ophth-Ret",
-          true
-        ],
-        [
-          "Address",
-          "12 Main St Tarrytown",
-          true
-        ],
-        [
-          "Last call",
-          "10/14/26, remote",
-          true
-        ]
-      ]
-    },
-    {
-      "id": "rx",
-      "name": "IQVIA prescriptions",
-      "kind": "Rx data",
-      "cadence": "Weekly file",
-      "records": "1 record",
-      "fields": [
-        [
-          "Prescriber",
-          "J A BROWN",
-          true
-        ],
-        [
-          "NPI",
-          "1234567893",
-          false
-        ],
-        [
-          "Market",
-          "Anti-VEGF",
-          false
-        ],
-        [
-          "TRx, 13 wks",
-          "42",
-          false
-        ],
-        [
-          "Decile",
-          "8",
-          false
-        ]
-      ]
-    },
-    {
-      "id": "ehr",
-      "name": "EHR / EMR",
-      "kind": "Clinical",
-      "cadence": "Monthly, via data partner",
-      "records": "1 of many",
-      "phi": true,
-      "fields": [
-        [
-          "Patient",
-          "vendor token dvt_8KQ2",
-          "phi"
-        ],
-        [
-          "Age band",
-          "75 to 79",
-          false
-        ],
-        [
-          "Diagnosis",
-          "H35.32 wet AMD",
-          false
-        ],
-        [
-          "Treating NPI",
-          "1234567893",
-          false
-        ]
-      ]
-    },
-    {
-      "id": "claims",
-      "name": "Claims",
-      "kind": "Claims",
-      "cadence": "Monthly file",
-      "records": "1 of many",
-      "phi": true,
-      "fields": [
-        [
-          "Member",
-          "vendor token dvt_8KQ2",
-          "phi"
-        ],
-        [
-          "Rendering NPI",
-          "1234567893",
-          false
-        ],
-        [
-          "Procedure",
-          "CPT 67028 injection",
-          false
-        ],
-        [
-          "Payer",
-          "Medicare",
-          false
-        ]
-      ]
-    },
-    {
-      "id": "digital",
-      "name": "Web and email",
-      "kind": "Digital",
-      "cadence": "Streamed and daily",
-      "records": "1 record",
-      "fields": [
-        [
-          "Email",
-          "JBrown@RetinaClinic.example",
-          true
-        ],
-        [
-          "Email key",
-          "SUB-55120",
-          false
-        ],
-        [
-          "Web cookie",
-          "ck_9f2a71 (anonymous)",
-          false
-        ],
-        [
-          "Pages",
-          "Dosing guide, MOA video",
-          false
-        ]
-      ]
-    }
+    { "id": "crm", "name": "Veeva CRM", "cadence": "Nightly extract", "records": 2, "route": "batch",
+      "fields": [["Name", "ORTIZ, LENA MD", true], ["Also as", "Dr Lena Ortiz", true], ["Specialty", "Med Onc", true], ["Address", "6400 Fannin St Houston", true], ["Last call", "10/02/26, in person", true], ["Call note", "\"Asked how to manage rash and colitis with IO…\"", false]] },
+    { "id": "rx", "name": "IQVIA prescriptions", "cadence": "Weekly file", "records": 1, "route": "batch",
+      "fields": [["Prescriber", "L ORTIZ", true], ["NPI", "14•••••213", false], ["Market", "Immuno oncology", false], ["TRx, 13 wks", "27", false], ["Decile", "7", false]] },
+    { "id": "claims", "name": "Claims and EHR", "cadence": "Monthly, via data partner", "records": 1, "route": "batch", "recordsLabel": "1 of many",
+      "fields": [["Patient", "vendor token dvt_3MX7", "phi"], ["Age band", "70 to 74", false], ["Diagnosis", "C44.92 skin squamous cell", false], ["Procedure", "CPT 96413 infusion", false], ["Treating NPI", "14•••••213", false]] },
+    { "id": "sfmc", "name": "SFMC email", "cadence": "Hourly", "records": 2, "route": "batch",
+      "fields": [["Email", "l.ortiz@houstononc.org", true], ["Also as", "LENA.ORTIZ@HOUSTONONC.ORG", true], ["SFMC key", "SUB-77310", false], ["Consent", "Opted in", false]] },
+    { "id": "web", "name": "HCP website", "cadence": "Streamed in seconds", "records": 1, "route": "stream",
+      "fields": [["Visitor", "Device 7f3a… (anonymous)", false], ["Day 1", "Downloaded efficacy summary", false], ["Pages", "Dosing, efficacy", false]] },
+    { "id": "ref", "name": "OneKey reference", "cadence": "Weekly", "records": 1, "route": "batch",
+      "fields": [["Name", "Ortiz, Lena", true], ["Specialty", "Medical Oncology", true], ["Practice", "Houston Cancer Associates", false], ["NPI", "14•••••213", false]] }
   ],
   "clean": [
-    [
-      "Name",
-      "BROWN, JOHN A | Dr John Brown",
-      "John A. Brown",
-      "Parse name parts, fix casing"
-    ],
-    [
-      "Duplicates",
-      "2 CRM records",
-      "1 CRM record",
-      "Remove duplicates within a source"
-    ],
-    [
-      "Specialty",
-      "Ophth-Ret | Retina",
-      "Ophthalmology, retina (RET)",
-      "Map every source to one specialty list"
-    ],
-    [
-      "Address",
-      "12 Main St Tarrytown",
-      "12 Main Street, Tarrytown, NY 10591",
-      "Postal address standardization"
-    ],
-    [
-      "Email",
-      "JBrown@RetinaClinic.example",
-      "jbrown@retinaclinic.example",
-      "Lowercase and validate"
-    ],
-    [
-      "Dates",
-      "10/14/26",
-      "2026-10-14",
-      "One date format everywhere"
-    ],
-    [
-      "Patient identity",
-      "vendor token dvt_8KQ2",
-      "{TOKEN}",
-      "Re-tokenize into your own token space"
-    ],
-    [
-      "Quality checks",
-      "unchecked",
-      "NPI valid, required fields present",
-      "Reject or flag records that fail"
-    ]
+    ["Name", "ORTIZ, LENA MD | Dr Lena Ortiz", "Lena Ortiz, MD", "Parse name parts, fix casing"],
+    ["Duplicates", "2 Veeva records, 2 SFMC contacts", "1 Veeva record, 1 SFMC contact", "Remove duplicates within a source"],
+    ["Specialty", "Med Onc | Hem/Onc | Medical Oncology", "Medical Oncology (MO)", "Map every source to one specialty list"],
+    ["Address", "6400 Fannin St Houston", "6400 Fannin Street, Houston, TX 77030", "Postal address standardization"],
+    ["Email", "LENA.ORTIZ@HOUSTONONC.ORG", "lena.ortiz@houstononc.org", "Lowercase and validate"],
+    ["Dates", "10/02/26", "2026-10-02", "One date format everywhere"],
+    ["Patient identity", "vendor token dvt_3MX7", "RGN_P58K2", "Re-tokenize into Regeneron's own token space"],
+    ["Quality checks", "unchecked", "NPI valid, required fields present", "Reject or flag records that fail"]
   ],
   "golden": [
-    [
-      "Master ID",
-      "HCP-004812",
-      [
-        "mdm"
-      ]
-    ],
-    [
-      "NPI",
-      "1234567893",
-      [
-        "rx",
-        "claims",
-        "ehr",
-        "ref"
-      ]
-    ],
-    [
-      "Name",
-      "John A. Brown, MD",
-      [
-        "crm",
-        "ref"
-      ]
-    ],
-    [
-      "Specialty",
-      "Ophthalmology, retina",
-      [
-        "crm",
-        "ref"
-      ]
-    ],
-    [
-      "Practice",
-      "12 Main Street, Tarrytown, NY",
-      [
-        "crm",
-        "ref"
-      ]
-    ],
-    [
-      "In practice since",
-      "2008 (18 years)",
-      [
-        "ref"
-      ]
-    ],
-    [
-      "Rx decile",
-      "8 in anti-VEGF",
-      [
-        "rx"
-      ]
-    ],
-    [
-      "Patients treated, 12 mo",
-      "96 (count only)",
-      [
-        "claims",
-        "ehr"
-      ]
-    ],
-    [
-      "Email on file",
-      "jbrown@retinaclinic.example",
-      [
-        "digital",
-        "crm"
-      ]
-    ]
+    ["Golden ID", "HCP-00731", ["match"]],
+    ["NPI", "14•••••213", ["rx", "claims", "ref"]],
+    ["Name", "Lena Ortiz, MD", ["crm", "ref"]],
+    ["Specialty", "Medical Oncology", ["crm", "ref"]],
+    ["Practice", "Houston Cancer Associates, 6400 Fannin Street", ["crm", "ref"]],
+    ["Rx decile", "7 in immuno oncology", ["rx"]],
+    ["Patients treated, 12 mo", "58 (count only)", ["claims"]],
+    ["Email on file", "lena.ortiz@houstononc.org", ["sfmc", "crm"]],
+    ["Last rep visit", "2026-10-02, in person", ["crm"]]
   ],
   "masterSources": [
-    [
-      "crm",
-      "Veeva CRM",
-      "Matched to NPI by name and address"
-    ],
-    [
-      "rx",
-      "IQVIA prescriptions",
-      "Matched on NPI"
-    ],
-    [
-      "claims",
-      "Claims",
-      "Matched on rendering NPI"
-    ],
-    [
-      "ehr",
-      "EHR / EMR",
-      "Matched on treating NPI"
-    ],
-    [
-      "digital",
-      "Web and email",
-      "Matched on email held in CRM"
-    ],
-    [
-      "ref",
-      "OneKey reference",
-      "Confirms identity, adds tenure"
-    ]
+    ["crm", "Veeva CRM", "Matched to NPI by name and address"],
+    ["rx", "IQVIA prescriptions", "Matched on NPI"],
+    ["claims", "Claims and EHR", "Matched on treating NPI"],
+    ["sfmc", "SFMC email", "Matched on email in Veeva"],
+    ["ref", "OneKey reference", "Confirms identity and specialty"]
   ],
-  "segment": {
-    "name": "Retina priority",
-    "universe": 18400,
-    "rules": [
-      [
-        "Specialty is retina",
-        "Ophthalmology, retina",
-        3150,
-        "specialty_code = 'RET'"
-      ],
-      [
-        "Rx decile 7 or higher",
-        "Decile 8",
-        1960,
-        "rx_decile_antivegf >= 7"
-      ],
-      [
-        "No in-person visit in 60 days",
-        "81 days",
-        1480,
-        "days_since_f2f_visit > 60"
-      ],
-      [
-        "Adoption propensity 0.7 or higher",
-        "0.82",
-        1240,
-        "adoption_propensity >= 0.70"
-      ]
-    ]
+  "ai": {
+    "question": "Is she likely to start a new patient on our therapy in the next 90 days?",
+    "pipeline": ["Feature Store", "Train in notebooks", "Model Registry", "Score every oncologist weekly"],
+    "trainedOn": "Two years of IQVIA prescriptions, claims counts, email engagement and call history, all already in Snowflake.",
+    "score": 0.81,
+    "percentile": "Top 12% of oncologists",
+    "table": "ML.HCP_SCORES",
+    "drivers": [["Patient volume rising, 6 months", 78], ["Opened efficacy content twice", 61], ["Peers in her practice already prescribing", 47], ["No rep visit in 45 days", 30]],
+    "note": "Dr O asked how her team should manage skin rash and colitis with immunotherapy in older patients. Wants something her infusion nurses can use.",
+    "noteSource": "Rep call note, Veeva CRM, 45 days ago",
+    "extract": [["Topic", "Side effect management"], ["Audience", "Infusion nurses"], ["Sentiment", "Interested"], ["Written to", "AI.CALL_NOTE_TOPICS"]],
+    "ask": "Which Texas oncologists raised side effect management this quarter but have not received the side effect guide?",
+    "answer": "38 oncologists. 9 score above 0.7. Dr. Lena Ortiz ranks second.",
+    "sql": "SELECT h.hcp_id, h.name, s.score\nFROM gold.hcp h\nJOIN ml.hcp_scores s USING (hcp_id)\nJOIN ai.call_note_topics t USING (hcp_id)\nWHERE h.state = 'TX'\n  AND t.topic = 'Side effect management'\n  AND h.hcp_id NOT IN (SELECT hcp_id FROM sfmc.sends\n                       WHERE asset = 'side_effect_guide')\nORDER BY s.score DESC;"
   },
   "insights": [
-    [
-      "Engagement score",
-      "74 of 100",
-      "insight"
-    ],
-    [
-      "Preferred channel",
-      "Remote, 3 of last 4 calls",
-      "insight"
-    ],
-    [
-      "Last in-person visit",
-      "81 days ago",
-      "insight"
-    ],
-    [
-      "Email consent",
-      "Yes",
-      "consent"
-    ],
-    [
-      "Adoption propensity",
-      "0.82",
-      "model"
-    ]
+    ["Likelihood score", "0.81", "Snowflake ML, via Zero Copy"],
+    ["Call note topic", "Side effect management", "Cortex, via Zero Copy"],
+    ["Interests", "Efficacy", "Streaming insight"],
+    ["Last rep visit", "45 days ago", "Calculated insight"],
+    ["Email consent", "Opted in", "Ingested consent"]
   ],
-  "channels": {
-    "crm": 1240,
-    "email": 980,
-    "media": 860,
-    "rt": 140,
-    "web": 610
+  "audience": {
+    "name": "Side effect priority",
+    "build": [["Specialty is Medical Oncology", 4120], ["Snowflake score at least 0.7", 1030], ["Side effect interest in 30 days, from downloads or call notes", 386], ["Not contacted in the last 14 days", 342]],
+    "rt": {
+      "name": "Side effect interest, last 24 hours",
+      "event": "Day 17, 10:14",
+      "eventText": "Dr. Ortiz downloads the immune related side effect management guide on the HCP website.",
+      "rules": [["Specialty is Medical Oncology", "Medical Oncology"], ["Downloaded side effect content in 24 hours", "10:14 today"], ["Snowflake score at least 0.7", "0.81"], ["Email consent is yes", "Yes"]],
+      "entered": "10:16"
+    }
   },
-  "cleanRoomOverlap": 870,
   "decide": {
-    "baseline": 15,
-    "valuePerEngaged": 2000,
-    "trigger": "downloaded the dosing guide yesterday",
     "options": [
-      {
-        "id": "call",
-        "name": "Rep remote call",
-        "response": 34,
-        "cost": 150,
-        "costLabel": "$150 rep time",
-        "priority": 2,
-        "email": false
-      },
-      {
-        "id": "webinar",
-        "name": "Webinar invite email",
-        "response": 21,
-        "cost": 5,
-        "costLabel": "$5",
-        "priority": 1,
-        "email": true
-      },
-      {
-        "id": "none",
-        "name": "Do nothing this week",
-        "response": 15,
-        "cost": 0,
-        "costLabel": "$0",
-        "priority": 3,
-        "email": false
-      },
-      {
-        "id": "visit",
-        "name": "Rep in-person visit",
-        "blocked": "Prefers remote; in-person slots full this week",
-        "costLabel": "Highest",
-        "email": false
-      },
-      {
-        "id": "dosing",
-        "name": "Dosing email",
-        "blocked": "Dosing content already emailed twice this month",
-        "costLabel": "$5",
-        "email": true
-      }
+      { "id": "guide", "name": "Side effect guide email", "response": 34, "rank": 2, "email": true },
+      { "id": "visit", "name": "Rep visit with nurse resources", "response": 22, "rank": 3, "email": false },
+      { "id": "webinar", "name": "Nurse education webinar invite", "response": 18, "rank": 1, "email": true },
+      { "id": "efficacy", "name": "Efficacy summary email", "blocked": "She downloaded it on Day 1; no repeat within 30 days", "email": true },
+      { "id": "msl", "name": "Medical science liaison outreach", "blocked": "Only after a documented medical information request", "email": false }
     ],
-    "capacity": {
-      "slots": 6,
-      "doctors": [
-        [
-          "Dr. Patel",
-          0.91,
-          3
-        ],
-        [
-          "Dr. Okafor",
-          0.88,
-          15
-        ],
-        [
-          "Dr. Chen",
-          0.87,
-          9
-        ],
-        [
-          "Dr. Rivera",
-          0.86,
-          12
-        ],
-        [
-          "Dr. Kim",
-          0.85,
-          8
-        ],
-        [
-          "Dr. Novak",
-          0.84,
-          4
-        ],
-        [
-          "Dr. Brown",
-          0.82,
-          19
-        ],
-        [
-          "Dr. Shah",
-          0.8,
-          14
-        ]
-      ],
-      "patelNote": "She would prescribe anyway; a call adds only 3 points."
-    },
-    "why": [
-      "Downloaded the dosing guide yesterday",
-      "81 days since last visit",
-      "Prefers remote calls"
-    ],
-    "topic": "Approved dosing discussion",
-    "nbe": [
-      [
-        "Within 5 days",
-        "Remote call",
-        false
-      ],
-      [
-        "Day after the call",
-        "Approved dosing summary email",
-        true
-      ],
-      [
-        "Two weeks later",
-        "Retina webinar invite",
-        true
-      ],
-      [
-        "If no engagement",
-        "Pause email for the month",
-        true
-      ]
-    ]
+    "why": "Downloaded the side effect guide at 10:14; her call note asked about side effects; highest predicted engagement of the allowed options",
+    "nbe": [["Today, 10:42", "Side effect guide email", true], ["Same day", "Rep alert in CRM", false], ["Within 7 days", "Rep visit, nurse webinar invite", false], ["If no engagement", "Pause email for 14 days", true]]
+  },
+  "channels": {
+    "email": { "label": "SFMC email", "kind": "push", "n": 296, "conn": "Marketing Cloud connector to Regeneron's SFMC business unit",
+      "steps": ["The decision chooses the side effect guide email for Dr. Ortiz.", "Data 360 writes her and the chosen fields (name, specialty, interest) into a shared data extension in SFMC.", "Journey Builder uses it as its entry source. Sent at 10:42 from \"Regeneron Oncology\".", "Subject: \"Managing immune related side effects: a guide for your team\", with the approved guide and Important Safety Information."],
+      "back": "Sends, opens and clicks flow back to Data 360 through the Marketing Cloud data stream, then on to Snowflake." },
+    "crm": { "label": "Rep alert in CRM", "kind": "push", "n": 342, "conn": "API or a write back to Snowflake, then into Veeva CRM. Veeva is not a native Data 360 target.",
+      "steps": ["The decision plans a rep visit within 7 days.", "The alert is written to Snowflake or sent through an API.", "Her rep, Marcus Lee, sees: \"Visit Dr. Ortiz this week. She downloaded the side effect guide today and asked about nurse support. Bring the nurse webinar invite.\"", "He visits on Day 21 and logs the call."],
+      "back": "The call record returns in the nightly Veeva extract, lands in Snowflake, and updates her profile." },
+    "media": { "label": "HCP media", "kind": "push", "n": 251, "conn": "NPI list to HCP media publishers; hashed emails for social platforms",
+      "steps": ["The Side effect priority segment publishes as a list of NPIs.", "The publisher matches NPIs to its verified HCP users.", "Dr. Ortiz sees the approved side effect resource when she logs into a publisher site or app.", "The publisher reports match rate and impressions as totals."],
+      "back": "Results come back as aggregate reports, not as individual records." },
+    "rt": { "label": "Real time triggers", "kind": "push", "n": 58, "conn": "Data Action targets: Salesforce Flow, platform events or SFMC journeys",
+      "steps": ["Dr. Ortiz downloads the side effect guide at 10:14.", "The web tracking script streams the event into Data 360 within seconds.", "A Data Action rule checks: side effect download, score at least 0.7, email consent.", "It fires: the decision runs, the email goes at 10:42 and the rep alert appears the same day."],
+      "back": "This runs per event, not per segment publish." },
+    "web": { "label": "Website", "kind": "pull", "n": 140, "conn": "Web tracking script plus Salesforce Personalization reading her live profile. Confirm the Personalization licence.",
+      "steps": ["Dr. Ortiz returns to the HCP website from the email link, so the site knows who she is.", "As the page loads, Personalization asks Data 360 for her live profile.", "It gets back: medical oncologist, interests efficacy and side effects, score 0.81.", "The page leads with the side effect resources and the nurse webinar instead of the generic hero."],
+      "back": "Nothing is sent ahead of time. The site asks about one person, at the moment she arrives. Her clicks stream back as new events." }
   },
   "learn": {
     "outcomes": [
-      {
-        "id": "engages",
-        "label": "Rep accepts, Dr. Brown engages",
-        "change": "Predicted response to a remote call: 34% to 41%",
-        "next": "Dosing summary email, as planned"
-      },
-      {
-        "id": "dismiss",
-        "label": "Rep dismisses: already discussed",
-        "change": "Dosing topics suppressed for 30 days. Rules learn the same day.",
-        "next": "Webinar invite"
-      },
-      {
-        "id": "none",
-        "label": "No response",
-        "change": "Estimated lift: +19 to +11",
-        "next": "Nothing for 14 days (fatigue rule)"
-      }
+      { "id": "engaged", "label": "She opens the guide and registers for the webinar",
+        "rows": [["Predicted engagement, side effect content", "34%", "41%"], ["Her next action", "Side effect guide email", "Rep visit with nurse webinar, as planned"], ["Sequence", "Step 1 of 4", "Step 3 of 4"]],
+        "who": "The model, at its next retrain in Snowflake: side effect content gains weight for oncologists like her." },
+      { "id": "dismissed", "label": "Rep dismisses the alert: \"already covered\"",
+        "rows": [["Side effect topics for Dr. Ortiz", "Allowed", "Rep alerts suppressed for 30 days"], ["Her next action", "Rep visit", "Nurse webinar invite by email"], ["Sequence", "Step 2 of 4", "Re-planned without the visit"]],
+        "who": "The rules, the same day. A dismiss reason is the cheapest training data there is, so capture it as a short pick list." },
+      { "id": "silent", "label": "No response to anything",
+        "rows": [["Predicted engagement", "34%", "22%"], ["Her next action", "Side effect guide email", "Nothing for 14 days"], ["Sequence", "Step 1 of 4", "Paused"]],
+        "who": "Both: the contact limit rule pauses her, and the model lowers her score at its next retrain." }
+    ],
+    "flowback": [
+      ["Email opens and clicks", "Into Data 360 through the Marketing Cloud data stream"],
+      ["Web visits and webinar registration", "Streamed into Data 360"],
+      ["Rep visit and alert feedback", "From Veeva through the nightly extract into Snowflake"],
+      ["Everything above", "Shared back from Data 360 to Snowflake through Zero Copy, where models retrain"]
     ],
     "holdoutShare": 0.1,
-    "holdoutDays": 90
+    "holdoutDays": 90,
+    "engagedContacted": 31,
+    "engagedHoldout": 12
   }
 }
